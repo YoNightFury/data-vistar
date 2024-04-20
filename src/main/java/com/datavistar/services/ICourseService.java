@@ -2,20 +2,22 @@ package com.datavistar.services;
 
 import java.util.List;
 
+import org.apache.coyote.BadRequestException;
+
 import com.datavistar.entities.Course;
 
 public interface ICourseService {
 
 	public List<Course> getAllCourses();
 
-	public Course getCourseById(Integer id);
+	public Course getCourseById(Integer id) throws BadRequestException;
 
 	public Course saveCourse(Course course);
 
-	public Course deleteCourseById(Integer id);
+	public Course deleteCourseById(Integer id) throws BadRequestException;
 
 	public List<Course> getCourses(Integer page, Integer limit);
 
-	public Course updateCourse(Course course);
+	public Course updateCourse(Integer id, Course course) throws BadRequestException;
 
 }

@@ -2,6 +2,8 @@ package com.datavistar.services;
 
 import java.util.List;
 
+import org.apache.coyote.BadRequestException;
+
 import com.datavistar.entities.Subject;
 
 public interface ISubjectService {
@@ -10,10 +12,12 @@ public interface ISubjectService {
 
 	public Subject getSubjectById(Integer id);
 
-	public Subject saveSubject(Subject subject);
+	public Subject saveSubject(Subject subject) throws BadRequestException;
 
 	public Subject deleteSubjectById(Integer id);
 
 	public List<Subject> getSubjects(Integer page, Integer limit);
+
+	public Subject updateSubject(Integer id, Subject subject) throws BadRequestException;
 
 }
