@@ -12,7 +12,7 @@ public interface ICategoryService {
 
 	public Category getCategoryById(Integer id) throws BadRequestException;
 
-	public Category saveCategory(Category category);
+	public Category saveCategory(Category category) throws BadRequestException;
 
 	public Category deleteCategoryById(Integer id) throws BadRequestException;
 

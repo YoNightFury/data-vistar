@@ -17,7 +17,7 @@ public interface IContentService {
 	public Content deleteContentById(Integer id) throws BadRequestException;
 
 	public List<Content> getContents(Integer page, Integer limit);
-	
+
 	public Content updateContent(Integer id, Content content) throws BadRequestException;
 
 }

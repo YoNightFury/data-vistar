@@ -12,7 +12,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(BadRequestException.class)
 	public ResponseEntity<?> handleBadRequest(BadRequestException ex) {
-		return ResponseEntity.badRequest().body(new Response(ex.getMessage(),false));
+		return ResponseEntity.badRequest().body(new Response(ex.getMessage(), false));
 	}
-	
+
 }

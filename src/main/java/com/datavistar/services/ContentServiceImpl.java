@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,11 @@ public class ContentServiceImpl implements IContentService {
 	public Content saveContent(Content content) throws BadRequestException {
 		Topic topic = topicService.getTopicById(content.getTopic().getId());
 		content.setTopic(topic);
+		try {
 		return contentRepository.save(content);
+		}catch (DataIntegrityViolationException e) {
+			throw new BadRequestException("Body and title cannot be blank!");
+		}
 	}
 
 	@Override
@@ -53,9 +58,10 @@ public class ContentServiceImpl implements IContentService {
 	public Content updateContent(Integer id, Content content) throws BadRequestException {
 		Content existingContent = getContentById(id);
 		Topic topic = topicService.getTopicById(content.getTopic().getId());
-		content.setTopic(topic);
-		content.setId(existingContent.getId()); // Ensure the ID is set
-		return contentRepository.save(content);
+		existingContent.setTopic(topic);
+		existingContent.setBody(content.getBody()); 
+		existingContent.setTitle(content.getTitle()); 
+		return contentRepository.save(existingContent);
 
 	}
 }

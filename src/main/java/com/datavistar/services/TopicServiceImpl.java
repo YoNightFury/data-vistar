@@ -54,8 +54,8 @@ public class TopicServiceImpl implements ITopicService {
 		Topic existingTopic = getTopicById(id);
 		Course course = courseService.getCourseById(topic.getCourse().getId());
 
-		topic.setCourse(course);
-		topic.setId(existingTopic.getId()); // Ensure the ID is set
+		existingTopic.setCourse(course);
+		existingTopic.setName(topic.getName());
 		return topicRepository.save(topic);
 	}
 }

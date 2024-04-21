@@ -25,8 +25,8 @@ public class SubjectServiceImpl implements ISubjectService {
 	}
 
 	@Override
-	public Subject getSubjectById(Integer id) {
-		return subjectRepository.findById(id).orElse(null);
+	public Subject getSubjectById(Integer id) throws BadRequestException {
+		return subjectRepository.findById(id).orElseThrow(() -> new BadRequestException("Invalid Subject id: " + id));
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class SubjectServiceImpl implements ISubjectService {
 	}
 
 	@Override
-	public Subject deleteSubjectById(Integer id) {
+	public Subject deleteSubjectById(Integer id) throws BadRequestException {
 		Subject subject = getSubjectById(id);
 		subjectRepository.deleteById(id);
 		return subject;
@@ -54,8 +54,8 @@ public class SubjectServiceImpl implements ISubjectService {
 		Subject existingSubject = getSubjectById(id);
 		Integer catid = subject.getCategory().getId();
 		Category category = categoryService.getCategoryById(catid);
-		subject.setCategory(category);
-		subject.setId(existingSubject.getId()); // Ensure the ID is set
-		return subjectRepository.save(subject);
+		existingSubject.setCategory(category);
+		existingSubject.setName(subject.getName());
+		return subjectRepository.save(existingSubject);
 	}
 }

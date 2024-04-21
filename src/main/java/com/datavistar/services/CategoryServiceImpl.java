@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +28,12 @@ public class CategoryServiceImpl implements ICategoryService {
 	}
 
 	@Override
-	public Category saveCategory(Category category) {
-		return categoryRepository.save(category);
+	public Category saveCategory(Category category) throws BadRequestException {
+		try {
+			return categoryRepository.save(category);
+		} catch (DataIntegrityViolationException ex) {
+			throw new BadRequestException("Category name should be unique");
+		}
 	}
 
 	@Override
@@ -48,7 +53,11 @@ public class CategoryServiceImpl implements ICategoryService {
 	@Override
 	public Category updateCategory(Integer id, Category category) throws BadRequestException {
 		Category existingCategory = getCategoryById(id);
-		category.setId(existingCategory.getId()); // Ensure the ID is set
-		return categoryRepository.save(category);
+		existingCategory.setName(category.getName());
+		try {
+			return categoryRepository.save(existingCategory);
+		} catch (DataIntegrityViolationException ex) {
+			throw new BadRequestException("Category name should be unique");
+		}
 	}
 }

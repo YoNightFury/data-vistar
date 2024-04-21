@@ -31,7 +31,7 @@ public class CourseServiceImpl implements ICourseService {
 	}
 
 	@Override
-	public Course saveCourse(Course course) {
+	public Course saveCourse(Course course) throws BadRequestException {
 		Subject subject = subjectService.getSubjectById(course.getSubject().getId());
 		course.setSubject(subject);
 		return courseRepository.save(course);
@@ -53,8 +53,8 @@ public class CourseServiceImpl implements ICourseService {
 	public Course updateCourse(Integer id, Course course) throws BadRequestException {
 		Course existingCourse = getCourseById(id);
 		Subject subject = subjectService.getSubjectById(course.getSubject().getId());
-		course.setSubject(subject);
-		course.setId(existingCourse.getId()); // Ensure the ID is set
-		return courseRepository.save(course);
+		existingCourse.setSubject(subject);
+		existingCourse.setName(course.getName());
+		return courseRepository.save(existingCourse);
 	}
 }

@@ -12,7 +12,7 @@ public interface ICourseService {
 
 	public Course getCourseById(Integer id) throws BadRequestException;
 
-	public Course saveCourse(Course course);
+	public Course saveCourse(Course course) throws BadRequestException;
 
 	public Course deleteCourseById(Integer id) throws BadRequestException;
 

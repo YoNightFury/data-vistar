@@ -6,7 +6,15 @@ import java.util.stream.Collectors;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.datavistar.dto.ContentDto;
 import com.datavistar.dto.Response;
@@ -16,6 +24,7 @@ import com.datavistar.services.IContentService;
 
 @RestController
 @RequestMapping("/api/content")
+@CrossOrigin("*")
 public class ContentController {
 
 	@Autowired
@@ -24,6 +33,15 @@ public class ContentController {
 	@GetMapping("/all")
 	public ResponseEntity<?> getAllContents() {
 		List<Content> contents = contentService.getAllContents();
+		List<ContentDto> contentDtos = contents.stream().map(content -> new ContentDto(content.getTitle(),
+				content.getBody(), content.getId(), content.getTopic().getId())).collect(Collectors.toList());
+		return ResponseEntity.ok(contentDtos);
+	}
+
+	@GetMapping
+	public ResponseEntity<?> getContents(@RequestParam(defaultValue = "0") Integer page,
+			@RequestParam(defaultValue = "10") Integer limit) {
+		List<Content> contents = contentService.getContents(page, limit);
 		List<ContentDto> contentDtos = contents.stream().map(content -> new ContentDto(content.getTitle(),
 				content.getBody(), content.getId(), content.getTopic().getId())).collect(Collectors.toList());
 		return ResponseEntity.ok(contentDtos);

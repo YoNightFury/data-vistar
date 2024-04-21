@@ -10,11 +10,11 @@ public interface ISubjectService {
 
 	public List<Subject> getAllSubjects();
 
-	public Subject getSubjectById(Integer id);
+	public Subject getSubjectById(Integer id) throws BadRequestException;
 
 	public Subject saveSubject(Subject subject) throws BadRequestException;
 
-	public Subject deleteSubjectById(Integer id);
+	public Subject deleteSubjectById(Integer id) throws BadRequestException;
 
 	public List<Subject> getSubjects(Integer page, Integer limit);
 
